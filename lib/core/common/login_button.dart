@@ -1,17 +1,22 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/core/constants/constants.dart';
+import 'package:reddit_clone/features/auth/controller/auth_controller.dart';
 import 'package:reddit_clone/theme/pallete.dart';
 
-class LogInButton extends StatelessWidget {
+class LogInButton extends ConsumerWidget {
   const LogInButton({
     super.key,
   });
 
+  void logIn(WidgetRef ref) {
+    ref.read(authControllerProvider).googleSignIn();
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialButton(
-      onPressed: () {},
+      onPressed: () => logIn(ref),
       height: 45,
       color: Pallete.greyColor,
       shape: const RoundedRectangleBorder(
