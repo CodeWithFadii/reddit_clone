@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:reddit_clone/core/constants/constants.dart';
 import 'package:reddit_clone/features/auth/controller/auth_controller.dart';
+import 'package:reddit_clone/router.dart';
 import 'package:reddit_clone/theme/pallete.dart';
 
 class LogInButton extends ConsumerWidget {
@@ -9,14 +13,14 @@ class LogInButton extends ConsumerWidget {
     super.key,
   });
 
-  void logIn(WidgetRef ref) {
-    ref.read(authControllerProvider).googleSignIn();
+  void logIn(BuildContext context, WidgetRef ref) async {
+    await ref.read(authControllerProvider.notifier).googleSignIn(context);
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialButton(
-      onPressed: () => logIn(ref),
+      onPressed: () => logIn(context, ref),
       height: 45,
       color: Pallete.greyColor,
       shape: const RoundedRectangleBorder(
