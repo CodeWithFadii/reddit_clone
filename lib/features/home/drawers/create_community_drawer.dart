@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:reddit_clone/core/common/error_text.dart';
+import 'package:reddit_clone/core/common/loader.dart';
+import 'package:reddit_clone/features/community/controller/community_controller.dart';
 import 'package:reddit_clone/router.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -19,7 +22,27 @@ class CreateCommunityDrawer extends ConsumerWidget {
             ListTile(
                 title: const Text('Create a community'),
                 leading: const Icon(Icons.add),
-                onTap: () => navigateCreateCommunityScreen(context))
+                onTap: () => navigateCreateCommunityScreen(context)),
+            ref.watch(getUserCommunitiesProvider).when(
+                  data: (data) {
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: data.length,
+                        itemBuilder: (context, index) {
+                          final community = data[index];
+                          return ListTile(
+                            leading: CircleAvatar(
+                              backgroundImage: NetworkImage(community.avatar),
+                            ),
+                            title: Text('r/${community.name}'),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  error: (error, _) => ErrorText(errorText: error.toString()),
+                  loading: () => const Loader(),
+                )
           ],
         ),
       ),
