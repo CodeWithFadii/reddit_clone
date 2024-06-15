@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/features/auth/controller/auth_controller.dart';
+import 'package:reddit_clone/features/home/delegates/community_search_delegate.dart';
 import 'package:reddit_clone/features/home/drawers/create_community_drawer.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -10,19 +11,23 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider)!;
     return Scaffold(
-      drawer: CreateCommunityDrawer(),
+      drawer: const CreateCommunityDrawer(),
       appBar: AppBar(
-        title: Text('Home'),
+        title: const Text('Home'),
         leading: Builder(builder: (context) {
           return IconButton(
             onPressed: () => openDrawer(context),
-            icon: Icon(Icons.menu),
+            icon: const Icon(Icons.menu),
           );
         }),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.search),
+            onPressed: () {
+              showSearch(
+                  context: context,
+                  delegate: CommunitySearchDelegate(ref: ref));
+            },
+            icon: const Icon(Icons.search),
           ),
           IconButton(
             onPressed: () {},
@@ -33,7 +38,7 @@ class HomeScreen extends ConsumerWidget {
               ),
             ),
           ),
-          SizedBox(width: 5),
+          const SizedBox(width: 5),
         ],
       ),
     );

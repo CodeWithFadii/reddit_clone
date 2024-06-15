@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,6 +25,9 @@ final getCommunitiesByNameProvider = StreamProvider.family((ref, String name) {
   return ref
       .watch(communityControllerProvider.notifier)
       .getCommunityByName(name);
+});
+final searchCommunityProvider = StreamProvider.family((ref, String query) {
+  return ref.watch(communityControllerProvider.notifier).searchCommunity(query);
 });
 
 class CommunityController extends StateNotifier<bool> {
@@ -72,6 +73,10 @@ class CommunityController extends StateNotifier<bool> {
     return _communityRepository.getCommunityByName(name);
   }
 
+  Stream<List<Community>> searchCommunity(String query) {
+    return _communityRepository.searchCommunity(query);
+  }
+
   void editCommunity(
       {required Community community,
       required XFile? imagePath,
@@ -98,7 +103,6 @@ class CommunityController extends StateNotifier<bool> {
     }
     final data = await _communityRepository.editCommunity(community: community);
     data.fold(((l) => showSnackBar(context, l.message)), (r) {
-      print('pooooooooooooop');
       Routemaster.of(context).pop();
     });
     state = false;
