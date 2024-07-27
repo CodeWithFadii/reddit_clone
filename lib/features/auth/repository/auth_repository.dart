@@ -84,4 +84,9 @@ class AuthRepository {
           ),
         );
   }
+
+  void logout() {
+    _googleSignIn.signOut();
+    _firebaseAuth.signOut();
+  }
 }
